@@ -1,0 +1,81 @@
+defmodule RitoPls.SummonerV4 do
+  alias RitoPls.Changesets.{
+    GetSummonerBySummonerNameRequest
+  }
+
+  alias RitoPls.Finches.{
+    LeagueOfLegendsFinch
+  }
+
+  @doc """
+  Gets a league of legends summoner by `:summoner_name`
+
+  ## Parameters
+
+    - summoner_name: A league of legends summoner name
+
+  ## Examples
+
+      iex> RitoPls.SummonerV4.get_summoner_by_summoner_name(summoner_name: "kerothedark")
+      {:ok, %Finch.Response{}}
+
+  """
+  def get_summoner_by_summoner_name([summoner_name: summoner_name] = opts) do
+    with %Ecto.Changeset{valid?: true} <-
+           GetSummonerBySummonerNameRequest.changeset(
+             %GetSummonerBySummonerNameRequest{},
+             Map.new(opts)
+           ),
+         {:ok, _finch_response} = response <-
+           LeagueOfLegendsFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
+      response
+    else
+      %Ecto.Changeset{valid?: false, errors: errors} ->
+        {:error, Kernel.inspect(errors)}
+    end
+  end
+
+  @doc false
+  def get_summoner_by_summoner_name() do
+    {:error, nil}
+  end
+
+  @doc """
+  Gets a league of legends summoner by `:summoner_name`
+
+  ## Parameters
+
+    - summoner_name: A league of legends summoner name
+
+  ## Examples
+
+      iex> RitoPls.SummonerV4.get_summoner_by_summoner_name!(summoner_name: "kerothedark")
+      %Finch.Response{}
+
+  """
+  def get_summoner_by_summoner_name!([summoner_name: summoner_name] = opts) do
+    with %Ecto.Changeset{valid?: true} <-
+           GetSummonerBySummonerNameRequest.changeset(
+             %GetSummonerBySummonerNameRequest{},
+             Map.new(opts)
+           ),
+         {:ok, finch_response} = _response <-
+           LeagueOfLegendsFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
+      finch_response
+    else
+      %Ecto.Changeset{valid?: false, errors: errors} ->
+        raise(ArgumentError, Kernel.inspect(errors))
+    end
+  end
+
+  @doc false
+  def get_summoner_by_summoner_name!() do
+    raise(ArgumentError, """
+    No parameters given
+
+    ## Parameters
+
+      - summoner_name: A league of legends summoner name
+    """)
+  end
+end
