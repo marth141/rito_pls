@@ -4,7 +4,7 @@ defmodule RitoPls.SummonerV4 do
   }
 
   alias RitoPls.Finches.{
-    LeagueOfLegendsFinch
+    PlatformFinch
   }
 
   @doc """
@@ -20,18 +20,12 @@ defmodule RitoPls.SummonerV4 do
       {:ok, %Finch.Response{}}
 
   """
-  def get_summoner_by_summoner_name([summoner_name: summoner_name] = opts) do
-    with %Ecto.Changeset{valid?: true} <-
-           GetSummonerBySummonerNameRequest.changeset(
-             %GetSummonerBySummonerNameRequest{},
-             Map.new(opts)
-           ),
-         {:ok, _finch_response} = response <-
-           LeagueOfLegendsFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
+  def get_summoner_by_summoner_name(summoner_name) do
+    with {:ok, _finch_response} = response <-
+           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
       response
     else
-      %Ecto.Changeset{valid?: false, errors: errors} ->
-        {:error, Kernel.inspect(errors)}
+      e -> {:error, e}
     end
   end
 
@@ -53,18 +47,12 @@ defmodule RitoPls.SummonerV4 do
       %Finch.Response{}
 
   """
-  def get_summoner_by_summoner_name!([summoner_name: summoner_name] = opts) do
-    with %Ecto.Changeset{valid?: true} <-
-           GetSummonerBySummonerNameRequest.changeset(
-             %GetSummonerBySummonerNameRequest{},
-             Map.new(opts)
-           ),
-         {:ok, finch_response} = _response <-
-           LeagueOfLegendsFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
+  def get_summoner_by_summoner_name!(summoner_name) do
+    with {:ok, finch_response} = _response <-
+           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
       finch_response
     else
-      %Ecto.Changeset{valid?: false, errors: errors} ->
-        raise(ArgumentError, Kernel.inspect(errors))
+      e -> {:error, e}
     end
   end
 

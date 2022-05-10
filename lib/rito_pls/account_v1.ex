@@ -1,10 +1,6 @@
 defmodule RitoPls.AccountV1 do
-  alias RitoPls.Changesets.{
-    GetAccountByRiotIdRequest
-  }
-
   alias RitoPls.Finches.{
-    RiotAccountFinch
+    RegionFinch
   }
 
   @doc """
@@ -21,18 +17,12 @@ defmodule RitoPls.AccountV1 do
       {:ok, %Finch.Response{}}
 
   """
-  def get_account_by_riot_id([game_name: game_name, tag_line: tag_line] = opts) do
-    with %Ecto.Changeset{valid?: true} <-
-           GetAccountByRiotIdRequest.changeset(
-             %GetAccountByRiotIdRequest{},
-             Map.new(opts)
-           ),
-         {:ok, _finch_response} = response <-
-           RiotAccountFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}") do
+  def get_account_by_riot_id(game_name, tag_line) do
+    with {:ok, _finch_response} = response <-
+           RegionFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}") do
       response
     else
-      %Ecto.Changeset{valid?: false, errors: errors} ->
-        {:error, Kernel.inspect(errors)}
+      e -> {:error, e}
     end
   end
 
@@ -55,18 +45,12 @@ defmodule RitoPls.AccountV1 do
       %Finch.Response{}
 
   """
-  def get_account_by_riot_id!([game_name: game_name, tag_line: tag_line] = opts) do
-    with %Ecto.Changeset{valid?: true} <-
-           GetAccountByRiotIdRequest.changeset(
-             %GetAccountByRiotIdRequest{},
-             Map.new(opts)
-           ),
-         {:ok, finch_response} = _response <-
-           RiotAccountFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}") do
+  def get_account_by_riot_id!(game_name, tag_line) do
+    with {:ok, finch_response} = _response <-
+           RegionFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}") do
       finch_response
     else
-      %Ecto.Changeset{valid?: false, errors: errors} ->
-        raise(ArgumentError, Kernel.inspect(errors))
+      e -> {:error, e}
     end
   end
 

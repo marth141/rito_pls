@@ -4,7 +4,6 @@ defmodule RitoPls.Application do
   @moduledoc false
 
   use Application
-  alias RitoPls.Runtime.GamesSupervisor
 
   @impl true
   def start(_type, _args) do
@@ -12,7 +11,8 @@ defmodule RitoPls.Application do
       # Starts a worker by calling: RitoPls.Worker.start_link(arg)
       # {RitoPls.Worker, arg}
       {Finch, name: RitoPlsFinch},
-      {Registry, name: RitoPls.WatchRegistry, keys: :unique}
+      {RitoPls.Registry, name: RitoPls.Registry},
+      {DynamicSupervisor, name: RitoPls.SummonerMatchMonitorSupervisor, strategy: :one_for_one}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
