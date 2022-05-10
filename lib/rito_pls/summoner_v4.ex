@@ -1,8 +1,4 @@
 defmodule RitoPls.SummonerV4 do
-  alias RitoPls.Changesets.{
-    GetSummonerBySummonerNameRequest
-  }
-
   alias RitoPls.Finches.{
     PlatformFinch
   }
