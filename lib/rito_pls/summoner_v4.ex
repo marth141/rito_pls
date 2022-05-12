@@ -45,7 +45,7 @@ defmodule RitoPls.SummonerV4 do
   """
   def get_summoner_by_summoner_name!(summoner_name) do
     with {:ok, finch_response} = _response <-
-           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
+           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}?") do
       finch_response
     else
       e -> {:error, e}
