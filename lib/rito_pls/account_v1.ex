@@ -17,6 +17,18 @@ defmodule RitoPls.AccountV1 do
       {:ok, %Finch.Response{}}
 
   """
+  def get_account_by_riot_id(game_name, tag_line, region) do
+    with {:ok, _finch_response} = response <-
+           RegionFinch.get(
+             "/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}?",
+             region
+           ) do
+      response
+    else
+      e -> {:error, e}
+    end
+  end
+
   def get_account_by_riot_id(game_name, tag_line) do
     with {:ok, _finch_response} = response <-
            RegionFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}?") do
@@ -45,6 +57,18 @@ defmodule RitoPls.AccountV1 do
       %Finch.Response{}
 
   """
+  def get_account_by_riot_id!(game_name, tag_line, region) do
+    with {:ok, finch_response} = _response <-
+           RegionFinch.get(
+             "/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}?",
+             region
+           ) do
+      finch_response
+    else
+      e -> {:error, e}
+    end
+  end
+
   def get_account_by_riot_id!(game_name, tag_line) do
     with {:ok, finch_response} = _response <-
            RegionFinch.get("/riot/account/v1/accounts/by-riot-id/#{game_name}/#{tag_line}?") do

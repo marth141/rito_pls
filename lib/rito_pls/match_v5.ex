@@ -4,9 +4,12 @@ defmodule RitoPls.MatchV5 do
   }
 
   def get_matches_by_puuid(puuid, opts \\ []) do
+    region = Keyword.get(opts, :region, nil)
+
     query_params =
       opts
       |> Enum.filter(fn
+        {:region, _region} -> false
         {_atom, string} when is_nil(string) -> false
         {_atom, _string} -> true
       end)
@@ -15,7 +18,15 @@ defmodule RitoPls.MatchV5 do
       end)
       |> List.to_string()
 
-    RegionFinch.get("/lol/match/v5/matches/by-puuid/#{puuid}/ids?#{query_params}")
+    if is_nil(region) do
+      RegionFinch.get("/lol/match/v5/matches/by-puuid/#{puuid}/ids?#{query_params}")
+    else
+      RegionFinch.get("/lol/match/v5/matches/by-puuid/#{puuid}/ids?#{query_params}", region)
+    end
+  end
+
+  def get_match_by_match_id(match_id, region) do
+    RegionFinch.get("/lol/match/v5/matches/#{match_id}?", region)
   end
 
   def get_match_by_match_id(match_id) do

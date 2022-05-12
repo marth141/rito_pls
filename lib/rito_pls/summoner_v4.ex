@@ -16,6 +16,16 @@ defmodule RitoPls.SummonerV4 do
       {:ok, %Finch.Response{}}
 
   """
+
+  def get_summoner_by_summoner_name(summoner_name, region) do
+    with {:ok, _finch_response} = response <-
+           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}", region) do
+      response
+    else
+      e -> {:error, e}
+    end
+  end
+
   def get_summoner_by_summoner_name(summoner_name) do
     with {:ok, _finch_response} = response <-
            PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}") do
@@ -43,6 +53,15 @@ defmodule RitoPls.SummonerV4 do
       %Finch.Response{}
 
   """
+  def get_summoner_by_summoner_name!(summoner_name, region) do
+    with {:ok, finch_response} = _response <-
+           PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}?", region) do
+      finch_response
+    else
+      e -> {:error, e}
+    end
+  end
+
   def get_summoner_by_summoner_name!(summoner_name) do
     with {:ok, finch_response} = _response <-
            PlatformFinch.get("/lol/summoner/v4/summoners/by-name/#{summoner_name}?") do
