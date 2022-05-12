@@ -1,4 +1,7 @@
 defmodule RitoPls.Finches.PlatformFinch do
+  @moduledoc """
+  Used to get queries to Riot's Platform Endpoints
+  """
   @base_url "api.riotgames.com"
   @api_key Application.get_env(:rito_pls, :api_key)
   def get(uri, platform \\ "na1") do

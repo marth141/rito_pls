@@ -1,4 +1,7 @@
 defmodule RitoPls.SummonerMatchMonitor do
+  @moduledoc """
+  Used to monitor a league of legends summoner for matches.
+  """
   use GenServer
 
   def read(server) do
@@ -8,14 +11,6 @@ defmodule RitoPls.SummonerMatchMonitor do
   # Callbacks
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts)
-  end
-
-  def push(pid, element) do
-    GenServer.cast(pid, {:push, element})
-  end
-
-  def pop(pid) do
-    GenServer.call(pid, :pop)
   end
 
   @impl true
@@ -71,19 +66,11 @@ defmodule RitoPls.SummonerMatchMonitor do
     {:reply, state, state}
   end
 
-  def handle_call(:pop, _from, [head | tail]) do
-    {:reply, head, tail}
-  end
-
   def handle_call(_msg, _from, state) do
     {:reply, "I don't know that call", state}
   end
 
   @impl true
-  def handle_cast({:push, element}, state) do
-    {:noreply, [element | state]}
-  end
-
   def handle_cast(_msg, state) do
     {:noreply, state}
   end

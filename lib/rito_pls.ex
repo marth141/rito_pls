@@ -4,19 +4,6 @@ defmodule RitoPls do
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> RitoPls.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  @doc """
   Given a `summoner_name` and `region` will monitor all of the players from the
   given player's last five matches for new matches every minute for the next hour.
 
@@ -27,11 +14,11 @@ defmodule RitoPls do
   """
   def create_watchers(summoner_name, region) do
     if is_nil(summoner_name) or not is_binary(summoner_name) do
-      raise "No summoner name given"
+      "No summoner name given"
     end
 
     if is_nil(RitoPls.RegionDictionary.get()[region]) or not is_binary(region) do
-      raise "No supported region given"
+      "No supported region given"
     end
 
     region_info = RitoPls.RegionDictionary.get()[region]
@@ -64,18 +51,24 @@ defmodule RitoPls do
 
   @doc false
   def create_watchers(_summoner_name) do
-    raise "No region given"
+    "No region given"
   end
 
   @doc false
   def create_watchers() do
-    raise "No summoner name or region given"
+    "No summoner name or region given"
   end
 
+  @doc """
+  Reads the GenServer registry
+  """
   def read_registry() do
     RitoPls.Registry.read_all(RitoPls.Registry)
   end
 
+  @doc """
+  Writes a map or json string to a json file.
+  """
   def write_to_json(json_string, file_name) when is_binary(json_string) do
     File.touch("#{file_name}.json")
 

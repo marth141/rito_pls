@@ -1,4 +1,9 @@
 defmodule RitoPls.Registry do
+  @moduledoc """
+  Used to key-value store GenServers.
+
+  In the scope of this app, the keys are summoner names and the value are GenServer pids.
+  """
   use GenServer
 
   def start_link(opts) do
@@ -30,7 +35,6 @@ defmodule RitoPls.Registry do
     {:reply, Map.fetch(names, name), state}
   end
 
-  @impl true
   def handle_call({:read_all}, _from, state) do
     {names, _} = state
     {:reply, names, state}
@@ -53,13 +57,6 @@ defmodule RitoPls.Registry do
       names = Map.put(names, name, pid)
       {:noreply, {names, refs}}
     end
-  end
-
-  @impl true
-  def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
-    {name, refs} = Map.pop(refs, ref)
-    names = Map.delete(names, name)
-    {:noreply, {names, refs}}
   end
 
   @impl true
