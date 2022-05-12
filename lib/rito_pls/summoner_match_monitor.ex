@@ -40,13 +40,17 @@ defmodule RitoPls.SummonerMatchMonitor do
 
   @impl true
   def handle_info(:check_for_matches, state) do
+    if(DateTime.diff(DateTime.now!("Etc/UTC"), state["started"]) >= 3600) do
+      {:stop, "Lived too long", state}
+    end
+
     summoner_name = Map.get(state, "summoner_name")
     {:ok, matches} = force_get_matches(state)
 
     new_matches = state["matches"] -- matches
 
     if new_matches != [] do
-      "New matches! #{inspect(new_matches)}"
+      "New matches for #{summoner_name}\n#{inspect(new_matches)}\n"
     end
 
     state =
@@ -54,7 +58,6 @@ defmodule RitoPls.SummonerMatchMonitor do
         [new_matches | previous_matches] |> List.flatten()
       end)
 
-    IO.puts("#{inspect(self())}: I refreshed #{summoner_name}")
     schedule_poll()
     {:noreply, state}
   end
