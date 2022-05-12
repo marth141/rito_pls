@@ -25,7 +25,7 @@ defmodule RitoPls do
     - Americas
 
   """
-  def give_it_a_whirl(summoner_name, region) do
+  def create_watchers(summoner_name, region) do
     if is_nil(summoner_name) or not is_binary(summoner_name) do
       raise "No summoner name given"
     end
@@ -63,12 +63,12 @@ defmodule RitoPls do
   end
 
   @doc false
-  def give_it_a_whirl(_summoner_name) do
+  def create_watchers(_summoner_name) do
     raise "No region given"
   end
 
   @doc false
-  def give_it_a_whirl() do
+  def create_watchers() do
     raise "No summoner name or region given"
   end
 
