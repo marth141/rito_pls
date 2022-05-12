@@ -41,7 +41,7 @@ defmodule RitoPls.SummonerMatchMonitor do
   @impl true
   def handle_info(:check_for_matches, state) do
     if(DateTime.diff(DateTime.now!("Etc/UTC"), state["started"]) >= 3600) do
-      {:stop, "Lived too long", state}
+      {:stop, :shutdown, state}
     end
 
     summoner_name = Map.get(state, "summoner_name")
