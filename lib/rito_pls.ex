@@ -72,6 +72,10 @@ defmodule RitoPls do
     raise "No summoner name or region given"
   end
 
+  def read_registry() do
+    RitoPls.Registry.read_all(RitoPls.Registry)
+  end
+
   def write_to_json(json_string, file_name) when is_binary(json_string) do
     File.touch("#{file_name}.json")
 

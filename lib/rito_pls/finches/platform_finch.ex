@@ -3,7 +3,6 @@ defmodule RitoPls.Finches.PlatformFinch do
   @api_key Application.get_env(:rito_pls, :api_key)
   def get(uri, platform \\ "na1") do
     Finch.build(:get, "https://#{platform}.#{@base_url}#{uri}&api_key=#{@api_key}")
-    |> IO.inspect()
     |> Finch.request(RitoPlsFinch)
   end
 end

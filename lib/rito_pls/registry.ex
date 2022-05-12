@@ -44,7 +44,8 @@ defmodule RitoPls.Registry do
       {:ok, pid} =
         DynamicSupervisor.start_child(
           RitoPls.SummonerMatchMonitorSupervisor,
-          RitoPls.SummonerMatchMonitor
+          {RitoPls.SummonerMatchMonitor,
+           %{"summoner_name" => name, "started" => DateTime.now!("Etc/UTC"), "matches" => []}}
         )
 
       ref = Process.monitor(pid)
