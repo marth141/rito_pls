@@ -10,8 +10,8 @@ defmodule RitoPls.MatchV5 do
       opts
       |> Enum.filter(fn
         {:region, _region} -> false
-        {_atom, string} when is_nil(string) -> false
-        {_atom, _string} -> true
+        {_atom, value} when is_nil(value) -> false
+        {_atom, _value} -> true
       end)
       |> Enum.map(fn
         {atom, value} -> "&#{to_string(atom)}=#{value}"
