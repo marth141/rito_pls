@@ -2,7 +2,7 @@
 
 The idea with this tool is to be able to look up a league of legends summoner name and region and to be able to get their last 5 matches and with a list of who all was in the game, monitor those players for new matches every minute for the next hour.
 
-This idea challenges what I know now and hence why it is not completed. However, an approach I'd take for solving this one would be to set up a dynamic supervisor and registry. With this, I'd register a GenServer to the registry and run it under the supervisor where the GenServer will be for monitoring all of the players. List of players -> List of player monitor GenServers.
+This idea challenged what I knew at the time. An approach I'd take for solving this one would be to set up a dynamic supervisor and registry. With this, I'd register a GenServer to the registry and run it under the supervisor where the GenServer will be for monitoring all of the players. List of players -> List of player monitor GenServers.
 
 Each GenServer would then monitor for matches and where matches occur, will store them to its database.
 
